@@ -3,13 +3,12 @@ import os
 class Game():
     def __init__(self):
         self.area = 0
-        self.gameStatus = [['','x','o'],
-                           ['x','','o'],
-                           ['x','x','x']]
-        self.whoseturn = False
-
-    def turn(self):
-        return 'x' if self.whoseturn == True else 'o'
+        self.gameStatus = [['','',''],
+                           ['','',''],
+                           ['','','']]
+        self.player = 'o'
+        self.opponent = 'x'
+        self.turn = self.player
 
     def drawArea(self):
         os.system('clear')
@@ -22,26 +21,28 @@ class Game():
     def doMove(self, x, y, saveMove = True):
         if self.gameStatus[x][y] == "":
             if saveMove:
-                self.gameStatus[x][y] = self.turn()
-                self.whoseturn = not self.whoseturn
+                self.gameStatus[x][y] = self.turn
+                self.turn = self.player if self.turn == self.opponent else self.opponent
                 return self.gameStatus
             else:
                 tempArr = self.gameStatus
-                tempArr[x][y] = self.turn()
+                tempArr[x][y] = self.turn
                 return tempArr
         else:
             return False
 
-    def checkWin(self):
+    def checkWin(self, peliArr = []):
+        if not peliArr:
+            peliArr = self.gameStatus
         for i in range(3):
-            for j in range(3):
-                self.gameStatus[i][j]
-
-tictac = Game()
-
-tictac.drawArea()
-while 1:
-    print(str(Game.turn) + " :",end="")
-    nextMove = list(input())
-    tictac.doMove(int(nextMove[0]), int(nextMove[1]))
-    tictac.drawArea()
+            if peliArr[i][0] != "":
+                if peliArr[i][0] == peliArr[i][1] and peliArr[i][1] == peliArr[i][2]:
+                    return peliArr[i][0]
+            if peliArr[0][i] != "":
+                if peliArr[0][i] == peliArr[1][i] and peliArr[1][i] == peliArr[2][i]:
+                    return peliArr[0][i]
+        if peliArr[1][1] != "":
+            if peliArr[0][0] == peliArr[1][1] and peliArr[1][1] == peliArr[2][2]:
+                return peliArr[0][0]
+            if peliArr[0][2] == peliArr[1][1] and peliArr[1][1] == peliArr[2][0]:
+                return peliArr[1][1]
