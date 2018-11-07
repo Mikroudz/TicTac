@@ -13,10 +13,8 @@ while 1:
         nextMove = list(input())
         tictac.doMove(int(nextMove[0]), int(nextMove[1]))
     else:
-        #nextMove = computer.makeBestMove(tictac.gameStatus)
-        print(tictac.turn + ":n vuoro",end="")
-
-        nextmove = list(input())
+        nextMove = computer.makeBestMove(tictac.gameStatus)
+        nextMove = list(nextMove)
         tictac.doMove(int(nextMove[0]), int(nextMove[1]))
     tictac.drawArea()
     if tictac.checkWin() != None:
