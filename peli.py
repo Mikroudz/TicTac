@@ -1,14 +1,16 @@
 import os
 
-class Game():
+class Game(object):
     def __init__(self):
         self.area = 0
+
         self.gameStatus = [['','',''],
                            ['','',''],
                            ['','','']]
         self.player = 'o'
         self.opponent = 'x'
         self.turn = self.player
+        self.laskin = 0
 
     def drawArea(self):
         os.system('clear')
@@ -32,7 +34,8 @@ class Game():
             return False
 
     def checkWin(self, peliArr = []):
-        if not peliArr:
+        #import pdb; pdb.set_trace()
+        if len(peliArr) < 1:
             peliArr = self.gameStatus
         for i in range(3):
             if peliArr[i][0] != "":
@@ -46,3 +49,4 @@ class Game():
                 return peliArr[0][0]
             if peliArr[0][2] == peliArr[1][1] and peliArr[1][1] == peliArr[2][0]:
                 return peliArr[1][1]
+        return None
