@@ -20,8 +20,16 @@ class Game(object):
                 print(" " + (self.gameStatus[i][j] if self.gameStatus[i][j] != "" else " ") + " |", end ='')
             print("\n")
 
+    def isEmptyPlaces(self, peliArr = []):
+        for i in range(3):
+            for j in range(3):
+                if self.gameStatus[i][j] == "":
+                    return True
+        return False
+
     def doMove(self, x, y, saveMove = True):
         if self.gameStatus[x][y] == "":
+            print(self.gameStatus)
             if saveMove:
                 self.gameStatus[x][y] = self.turn
                 self.turn = self.player if self.turn == self.opponent else self.opponent

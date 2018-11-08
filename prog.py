@@ -2,7 +2,7 @@ from peli import Game
 from ai import Ai
 import os
 
-computer = Ai()
+#computer = Ai()
 tictac = Game()
 tictac.drawArea()
 validrange = range(0,2)
@@ -13,10 +13,14 @@ while 1:
         nextMove = list(input())
         tictac.doMove(int(nextMove[0]), int(nextMove[1]))
     else:
+        computer = Ai()
         nextMove = computer.makeBestMove(tictac.gameStatus)
         nextMove = list(nextMove)
         tictac.doMove(int(nextMove[0]), int(nextMove[1]))
     tictac.drawArea()
     if tictac.checkWin() != None:
         print(tictac.checkWin() + " voitti!")
+        exit()
+    elif not tictac.isEmptyPlaces():
+        print("Kukaan ei voittanu :(")
         exit()

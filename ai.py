@@ -1,24 +1,17 @@
 import os
 from peli import Game
 
+
 class Ai(Game):
     def __init__(self):
         self.maximum = False
-        self.gameBoard = []
-        self.curBestMoveVal = 0
+        self.curBestMoveVal = -9999
         self.bestX = 0
         self.bestY = 0
-
-    def isEmptyPlaces(self):
-        for i in range(3):
-            for j in range(3):
-                if self.gameBoard[i][j] == "":
-                    return True
-        return False
+        self.gameStatus = []
 
     def minimax(self, tempGameStatus, isMaximizing):
         gameWinner = self.checkWin(tempGameStatus)
-
         if gameWinner == 'x':
             return 10
         elif gameWinner == 'o':
@@ -46,16 +39,17 @@ class Ai(Game):
                         tempGameStatus[i][j] = ""
             return bestPlaceScore
 
-    def makeBestMove(self,gameBoard):
-        self.gameBoard = gameBoard
+    def makeBestMove(self,boardStatus):
+        self.gameStatus = boardStatus
         for i in range(3):
             for j in range(3):
-                if self.gameBoard[i][j] == "":
-                    self.gameBoard[i][j] = 'x'
-                    bestMove = self.minimax(self.gameBoard, self.maximum)
+                if self.gameStatus[i][j] == "":
+                    self.gameStatus[i][j] = 'x'
+                    bestMove = self.minimax(self.gameStatus, self.maximum)
+                    self.gameStatus[i][j] = ""
                     if self.curBestMoveVal < bestMove:
                         self.curBestMoveVal = bestMove
-                        self.bestY = j
-                        self.bestX = i
-        asd = ''
+                        self.bestY = i
+                        self.bestX = j
+        #import pdb; pdb.set_trace()
         return str(self.bestY) + str(self.bestX)
