@@ -42,7 +42,6 @@ class Game(object):
             return False
 
     def checkWin(self, peliArr = []):
-        #import pdb; pdb.set_trace()
         if len(peliArr) < 1:
             peliArr = self.gameStatus
         for i in range(3):
