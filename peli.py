@@ -1,7 +1,7 @@
 import os
 
 class Game(object):
-    def __init__(self):
+    def __init__(self, firstTurn = False):
         self.area = 0
 
         self.gameStatus = [['','',''],
@@ -9,7 +9,7 @@ class Game(object):
                            ['','','']]
         self.player = 'o'
         self.opponent = 'x'
-        self.turn = self.player
+        self.turn = self.opponent if firstTurn == True else self.player
         self.laskin = 0
 
     def drawArea(self):

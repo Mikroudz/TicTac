@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 
 #computer = Ai()
-tictac = Game()
+tictac = Game(False)
 tictac.drawArea()
 validrange = range(0,2)
 executionTime = 0

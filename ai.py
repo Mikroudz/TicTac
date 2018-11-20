@@ -1,7 +1,6 @@
 import os
 from peli import Game
 
-
 class Ai(Game):
     def __init__(self):
         self.curBestMoveVal = -9999
@@ -26,7 +25,7 @@ class Ai(Game):
                 for j in range(3):
                     if tempGameStatus[i][j] == "":
                         tempGameStatus[i][j] = 'x'
-                        bestPlaceScore = max(bestPlaceScore, self.minimax(tempGameStatus, iters, not isMaximizing, alpha, beta))
+                        bestPlaceScore = max(bestPlaceScore, self.minimax(tempGameStatus, iters+1, not isMaximizing, alpha, beta))
                         tempGameStatus[i][j] = ""
                         if alpha < bestPlaceScore:
                             alpha = bestPlaceScore
@@ -39,7 +38,7 @@ class Ai(Game):
                 for j in range(3):
                     if tempGameStatus[i][j] == "":
                         tempGameStatus[i][j] = 'o'
-                        bestPlaceScore = min(bestPlaceScore, self.minimax(tempGameStatus, iters, not isMaximizing, alpha, beta))
+                        bestPlaceScore = min(bestPlaceScore, self.minimax(tempGameStatus, iters+1, not isMaximizing, alpha, beta))
                         tempGameStatus[i][j] = ""
                         if beta > bestPlaceScore:
                             beta = bestPlaceScore
@@ -53,8 +52,7 @@ class Ai(Game):
             for j in range(3):
                 if self.gameStatus[i][j] == "":
                     self.gameStatus[i][j] = 'x'
-                    self.maximum = False
-                    bestMove = self.minimax(self.gameStatus, 0, self.maximum, -1000, 1000)
+                    bestMove = self.minimax(self.gameStatus, 0, False, -1000, 1000)
                     self.debug.append([i, j, bestMove])
                     self.gameStatus[i][j] = ""
                     if self.curBestMoveVal < bestMove:
