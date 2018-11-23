@@ -18,6 +18,7 @@ while 1:
         startTime = datetime.now()
         computer = Ai()
         nextMove = computer.makeBestMove(tictac.gameStatus)
+        del computer
         executionTime = datetime.now() - startTime
         nextMove = list(nextMove)
         tictac.doMove(int(nextMove[0]), int(nextMove[1]))
