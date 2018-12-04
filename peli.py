@@ -44,6 +44,7 @@ class Game(object):
     def checkWin(self, peliArr = []):
         if len(peliArr) < 1:
             peliArr = self.gameStatus
+
         for i in range(3):
             if peliArr[i][0] != "":
                 if peliArr[i][0] == peliArr[i][1] and peliArr[i][1] == peliArr[i][2]:
