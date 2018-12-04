@@ -11,8 +11,10 @@ gamestatus = "game/tictac/gamestatus"
 
 #computer = Ai()
 client = mqtt.Client("neekeri")
-client.connect("127.0.0.1")
-
+try:
+    client.connect("127.0.0.1")
+except:
+    print("Connection failed :(")
 
 client.publish(status, "Game start")
 tictac = Game(False)
