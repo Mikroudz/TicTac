@@ -1,5 +1,6 @@
 from peli import Game
 from ai import Ai
+from kuvantunnistus import *
 from datetime import datetime
 import paho.mqtt.client as mqtt
 import os
@@ -11,6 +12,7 @@ gamestatus = "game/tictac/gamestatus"
 
 #computer = Ai()
 client = mqtt.Client("neekeri")
+
 try:
     client.connect("127.0.0.1")
 except:
