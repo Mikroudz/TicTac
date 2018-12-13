@@ -1,13 +1,23 @@
 import cv2
 import numpy as np
 import imutils
+from skimage import exposure
 
 src = cv2.imread('testikuvat/current.jpg')
-#hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-#h, s, v = cv2.split(hsv)
-#v += 300
-#hsv = cv2.merge((h, s, v))
+def detectShape(c):
+    shape = "empty or not found"
+    peri = cv2.arcLength(c, True)
+    approx = cv2.approxPolyDP(c, 0.04 * peri, True)
+
+    if len(approx) == 3:
+        shape = "triangle"
+    elif len(approx) == 4:
+        shape = "square"
+    else:
+        shape = "circle"
+    return shape
+
 img = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 img = cv2.fastNlMeansDenoising(img, None, 9, 13)
 denoiced = cv2.GaussianBlur(img, (3, 3), 0).astype('uint8')
@@ -77,8 +87,27 @@ warp = cv2.warpPerspective(src, M, (maxWidth, maxHeight))
 print(maxWidth)
 print(maxHeight)
 
-cv2.imshow('gray',tresh)
-cv2.imshow('image2',warp)
+#Korjatun ja varpatun kuvan syynäyksen aloitus
+warp = cv2.cvtColor(warp, cv2.COLOR_BGR2GRAY)
+warp = exposure.rescale_intensity(warp, out_range = (0, 255))
+warp_tresh = cv2.adaptiveThreshold(warp,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY_INV,101,1)
+warp_laplacian = cv2.Laplacian(warp_tresh,cv2.CV_8U)
+
+warp_absd = cv2.convertScaleAbs(warp_laplacian)
+
+x = []
+for i in range(3):
+    for j in range(3):
+        x.append(warp_absd[int(i*maxHeight/3):int((i+1)*maxHeight/3),int(j*maxWidth/3):int((j+1)*maxWidth/3)].copy())
+
+cnts = cv2.findContours(x[6].copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+cnts = imutils.grab_contours(cnts)
+
+for c in cnts:
+    print(detectShape(c))
+
+cv2.imshow('part',x[6])
+cv2.imshow('gray',warp_tresh)
 cv2.imshow('image',src)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
