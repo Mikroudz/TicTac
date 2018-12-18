@@ -1,6 +1,7 @@
 from peli import Game
 from ai import Ai
-from kuvantunnistus import *
+from tcp_client import Resend
+#import kuvantunnistus
 from datetime import datetime
 import paho.mqtt.client as mqtt
 import os
@@ -12,11 +13,17 @@ gamestatus = "game/tictac/gamestatus"
 
 #computer = Ai()
 client = mqtt.Client("neekeri")
+robotTCP = Resend()
 
 try:
     client.connect("127.0.0.1")
 except:
-    print("Connection failed :(")
+    print("MQTT connection failed :(")
+
+try:
+    robotTCP.TCPconnect('192.168.100.10', 30002)
+except:
+    print("Cannot connect to robot")
 
 client.publish(status, "Game start")
 tictac = Game(False)
@@ -41,6 +48,8 @@ while 1:
         executionTime = datetime.now() - startTime
         nextMove = list(nextMove)
         tictac.doMove(int(nextMove[0]), int(nextMove[1]))
+        robotTCP.TCPsend(nextMove[0],nextMove[1])
+
         del computer
     client.publish(gamestatus, json.dumps(tictac.gameStatus))
     tictac.drawArea()
